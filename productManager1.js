@@ -29,13 +29,13 @@ class productManager {
     getProducts = () => {
         return this.products;
     } 
-
-    getProductById (id)  {
-        const idProduct = this.products.find(product=> product.id === id)
-        if(!idProduct) {
-            console.error("Not Found")
-            return null;
-        }  else {return console.log("El producto solicitado es: ", idProduct.title) };        
+    getProductById(id) {
+        const idProduct = this.products.find((product) => product.id === id);
+        if (!idProduct) {
+           console.error("Not Found");
+        } else {
+            console.log(`"El producto solicitado es: ", ${idProduct.title}`);
+        }
     }
 }
 
@@ -51,4 +51,3 @@ console.log(ProductManager.getProductById(1));
 console.log(ProductManager.getProductById(10));
 
  
-

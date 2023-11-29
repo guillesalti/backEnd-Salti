@@ -1,0 +1,13 @@
+{
+  "name": "backend-salti",
+  "version": "1.0.0",
+  "description": "Mi nombre es Guillemrina Salti, soy de la ciudad de Rosario.\r Este es mi primer desafío entregable del curso de programación BackEnd comisión número 55650. git",
+  "type": "module",
+  "main": "productManager2.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
