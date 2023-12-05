@@ -135,31 +135,31 @@ class ProductManager {
 
 }
 
-const productManager = new ProductManager();
-//sin await trae la promesa sin resolver
-console.log (await productManager.getProduct()); //trae array sin nada
+// const productManager = new ProductManager();
+// //sin await trae la promesa sin resolver
+// console.log (await productManager.getProduct()); //trae array sin nada
 
-await productManager.addProduct("Caja Pan Dulce", "caja para pan dulce de 500grs.", 350, "sin imagen", "cajaPanDulce", 500);
-console.log (await productManager.getProduct()) //trae con caja pan dulce
+// await productManager.addProduct("Caja Pan Dulce", "caja para pan dulce de 500grs.", 350, "sin imagen", "cajaPanDulce", 500);
+// console.log (await productManager.getProduct()) //trae con caja pan dulce
 
-await productManager.addProduct("Caja Budín", "caja para Budín de 300grs.", 250, "sin imagen", "cajaBudin", 400);
+// await productManager.addProduct("Caja Budín", "caja para Budín de 300grs.", 250, "sin imagen", "cajaBudin", 400);
 
-await productManager.addProduct("Caja Navideña", "caja para regalo empresarial", 50, "sin imagen", "cajaNavidad", 1000);
-console.log(await productManager.getProductById(3));//muestra caja navideña
+// await productManager.addProduct("Caja Navideña", "caja para regalo empresarial", 50, "sin imagen", "cajaNavidad", 1000);
+// console.log(await productManager.getProductById(3));//muestra caja navideña
 
-console.log(await productManager.getProduct())// muestra caja pan dulce, budin y navideña
+// console.log(await productManager.getProduct())// muestra caja pan dulce, budin y navideña
 
-await productManager.deleteProductById(1);
+// await productManager.deleteProductById(1);
 
-console.log(await productManager.getProduct())// muestra sin caja pan dulce (caja budin y navideña)
+// console.log(await productManager.getProduct())// muestra sin caja pan dulce (caja budin y navideña)
 
-console.log(await productManager.getProductById(13));//muestra not found
+// console.log(await productManager.getProductById(13));//muestra not found
 
-await productManager.addProduct("Caja vino", "caja para una botella", 150, "sin imagen", "cajaBudin", 410);
-await productManager.addProduct("Caja Navideña", "caja para regalo empresarial chica", 100, "sin imagen", "cajaNavidadChica", 500);
-console.log (await productManager.getProduct())//trae errores de code y title repetido + caja budin y navideña(pan dulce se elimino)
+// await productManager.addProduct("Caja vino", "caja para una botella", 150, "sin imagen", "cajaBudin", 410);
+// await productManager.addProduct("Caja Navideña", "caja para regalo empresarial chica", 100, "sin imagen", "cajaNavidadChica", 500);
+// console.log (await productManager.getProduct())//trae errores de code y title repetido + caja budin y navideña(pan dulce se elimino)
 
-await productManager.updateProduct(4, "code", "cajaVino");
-await productManager.updateProduct(5, "title", "Caja Navideña Chica");
-console.log (await productManager.getProduct())//deberia traer todo sin errores pero no anda :'(
+// await productManager.updateProduct(4, "code", "cajaVino");
+// await productManager.updateProduct(5, "title", "Caja Navideña Chica");
+// console.log (await productManager.getProduct())//deberia traer todo sin errores pero no anda :'(
 
