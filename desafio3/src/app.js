@@ -5,7 +5,7 @@ import ProductManager from "./productManager.js";
 
 const app = express();
 const productManager = new ProductManager();
-const PUERTO = 8080; //para reusar codigo, las const esas se ponen en mayuscula, Cuando me guarda un valor
+// const PUERTO = 8080; //para reusar codigo, las const esas se ponen en mayuscula, Cuando me guarda un valor
 
 app.get('/api/products', async (req, res) => {
     try {
