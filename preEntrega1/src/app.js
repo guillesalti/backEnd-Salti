@@ -1,6 +1,8 @@
 import express  from "express";
 // import ProductManager from "./classes/productManager";
 import productRouter from './routes/products.router.js';
+import cartRouter from './routes/cart.router.js';
+;
 
 
 const app = express();
@@ -13,6 +15,7 @@ app.get("/", (req, res) => {
     res.send("");
 })
 app.use('/api/products', productRouter);
+app.use('/api/cart', cartRouter);
 
 app.listen(PORT, (error)=>{ //escucha el puerto (si no se lo paso agarra el q encuentre disponible) y callBack
     if(error) {

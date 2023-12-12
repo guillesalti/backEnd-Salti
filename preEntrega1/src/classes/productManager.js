@@ -4,22 +4,20 @@ import crypto from "crypto";
 export default class ProductManager { //exporto para usarla dentro de app
     
     #filePath;
-    // #lastId = 0;
-
     constructor (filePath = './src/product.json') {
-        this.#filePath = filePath;
-        // this.#setLastId(); //tomo info del json y la guardo para no arrancar siempre en 0
+    this.#filePath = filePath;        
     }
 
-    async addProduct(title, description, price, thumbnail,  code, stock){
+    async addProduct(title, description, price, thumbnail,  code, stock, category, status){
         try {
             if(
                 title == undefined ||
                 description == undefined ||
                 price == undefined ||
-                thumbnail == undefined ||
                 code == undefined ||
-                stock == undefined
+                stock == undefined ||
+                category == undefined ||
+                status == undefined
                 ) {
                 throw new Error ("Todos los campos son obligatorios");
             }
@@ -45,7 +43,9 @@ export default class ProductManager { //exporto para usarla dentro de app
                 price, 
                 thumbnail, 
                 code, 
-                stock, 
+                stock,
+                category,
+                status 
             };
         
            products.push(newProduct); //agrega nuevo producto como objeto
@@ -100,7 +100,7 @@ export default class ProductManager { //exporto para usarla dentro de app
         };
     };
     
-    async updateProduct(id,productToUpdate, newValue){//actualizaciones
+    async updateProduct(id, newValue){//actualizaciones
         try {
             const products = await this.getProduct();
             //encuenra el lugar de un producto q coincida el id
@@ -110,8 +110,10 @@ export default class ProductManager { //exporto para usarla dentro de app
                 throw new Error (`El producto con el id ${id}, no existe`);
             }
             //si existe, accedo a la ubi del obj y al nombre y le asigno el nuevo valor
-            products [productPlace][productToUpdate] = newValue;
-
+            products [productPlace]= {
+                ...products[productPlace],
+                ...newValue
+            }
             await this.#saveProducts(products);
         }
         catch
@@ -120,21 +122,6 @@ export default class ProductManager { //exporto para usarla dentro de app
         };
     };
 
-//    async #setLastId(){
-//         try{
-//             const products = await this.getProduct();
-//             if(products.length <1 ) {
-//                 this.#lastId = 0;
-//             return;
-//             }
-//             this.#lastId = products[products.length-1].id; 
-//             //da el ultimo articulo q agregue sin importar su numero d id
-//         }
-//         catch
-//         (error){
-//             console.log(error.title, error.message)
-//         };
-//     };
 
     async #saveProducts(products){ //para no repetir siempre el pase d json. Le da Modularidad
         try {
@@ -145,6 +132,7 @@ export default class ProductManager { //exporto para usarla dentro de app
         };
     };
 }
+// const productManager = new ProductManager();
 // await productManager.addProduct(
 //     "Caja Pan Dulce 250grs", 
 //     "caja para pan dulce de 250grs.", 
@@ -152,6 +140,8 @@ export default class ProductManager { //exporto para usarla dentro de app
 //     "sin imagen",
 //     "cajaPanDulce250",
 //     500,
+//     "cajas",
+//     true
 // );
 // await productManager.addProduct(
 //     "Caja Pan Dulce 500grs", 
@@ -160,6 +150,8 @@ export default class ProductManager { //exporto para usarla dentro de app
 //     "sin imagen",
 //     "cajaPanDulce500",
 //     500,
+//     "cajas",
+//     true
 // ),
 // await productManager.addProduct(
 //     "Caja Pan Dulce 250grs", 
@@ -168,6 +160,8 @@ export default class ProductManager { //exporto para usarla dentro de app
 //     "sin imagen",
 //      "cajaPanDulce250",
 //     500,
+//     "cajas",
+//     true
 // )
 // await productManager.addProduct(
 //      "Caja Budín 300grs", 
@@ -176,6 +170,8 @@ export default class ProductManager { //exporto para usarla dentro de app
 //     "sin imagen",
 //     "cajaBudin300",
 //      400,
+//      "cajas",
+//     true
 // )
 // await productManager.addProduct(
 //     "Caja Budín 500grs", 
@@ -184,6 +180,8 @@ export default class ProductManager { //exporto para usarla dentro de app
 //     "sin imagen",
 //     "cajaBudin500",
 //     400,
+//     "cajas",
+//     true
 // )
 // await productManager.addProduct(
 //     "Caja Navideña Grande",  
@@ -192,6 +190,8 @@ export default class ProductManager { //exporto para usarla dentro de app
 //     "sin imagen",
 //     "cajaNavideñaGrande",
 //      1100,
+//      "cajas",
+//     true
 // )
 // await productManager.addProduct(
 //     "Caja Navideña Chica",  
@@ -200,6 +200,8 @@ export default class ProductManager { //exporto para usarla dentro de app
 //     "sin imagen",
 //     "cajaNavideñaChica",
 //     1100,
+//     "cajas",
+//     true
 // )
 // await productManager.addProduct(
 //     "Caja para una botella",  
@@ -208,6 +210,8 @@ export default class ProductManager { //exporto para usarla dentro de app
 //     "sin imagen",
 //     "cajaUnaBotella",
 //     410,
+//     "cajas",
+//     true
 // )
 // await productManager.addProduct(
 //     "Caja para dos botellas",  
@@ -216,5 +220,7 @@ export default class ProductManager { //exporto para usarla dentro de app
 //     "sin imagen",
 //     "cajaDosBotella",
 //     410,
+//     "cajas",
+//     true
 // )
 // console.log (await productManager.getProduct()) 
