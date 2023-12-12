@@ -56,11 +56,18 @@ router.post('/', async (req, res) => { //crea info
 
         const result = await productManager.addProduct(title, description, price, thumbnail, code, stock);
 
-        res.status(200).send({
-            success: true,
-            message: `Producto: ${title} agregado exitosamente`,
-            data: result,
-        });
+        if (result) {
+            res.status(200).send({
+                success: true,
+                message: `Producto: ${title} agregado exitosamente`,
+                data: result,
+            });
+        } else {
+            res.status(400).send({
+                success: false,
+                message: "Error al agregar el producto",
+            });
+        }
     } catch (error) {
         console.error(error);
         res.status(500).send({

@@ -64,20 +64,34 @@ export default class CartManager { //exporto para usarla dentro de app
         try{
             const cart = await this.getCartById(cid); // lo busca x id
            
-            const {products} = cart;
-            const productPlace = products.findIndex(product => product.product === pid);
+            if (!cart) {
+                throw new Error("Cart not Found");
+            }
+            
+            const productPlace = cart.products.findIndex((product) => product.product === pid);
 
-        if (productPlace === -1 ){ //si no existe, lo agrega
-            products.push({
-                product: pid,
-                quantity: 1
-            })
-        } else { products[productPlace].quantity++}
+            if (productPlace === -1) {//si no existe, lo agrega
+                cart.products.push({
+                    product: pid,
+                    quantity: 1,
+                });
+            } else {
+                cart.products[productPlace].quantity++;
+                console.log("exists");
+            }
          //si existe le suma 1
 
-        await this.updateCart(cid, {products});
-        
-        await this.#saveCarts(cart)
+         const carts = await this.getCart();
+
+            const cartsUpdated = carts.map((existingCart) => {
+                if (existingCart.id == cid) { // si existe me lo retorna modificado
+                return cart;
+            }
+
+            return existingCart; //sino, muestra el existente
+         })
+                 
+         await this.#saveCarts(cartsUpdated) //guarda carritos modificados
 
         return cart;
         }catch
@@ -87,22 +101,7 @@ export default class CartManager { //exporto para usarla dentro de app
         };
     }
 
-    async updateCart(cart){//actualizaciones
-        try {
-            const {id}=cart;
-            const carts = await this.getCart();
-            const cartPlace = carts.findIndex(cart => cart.id === id);
-            
-            carts.splice(cartPlace, 1, cart);
-
-            await this.#saveCarts(carts);
-            return carts
-        }
-        catch
-        (error){
-            console.log(error.title, error.message)
-        };
-    };
+    
    
     
 

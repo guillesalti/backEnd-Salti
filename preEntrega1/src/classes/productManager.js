@@ -15,9 +15,7 @@ export default class ProductManager { //exporto para usarla dentro de app
                 description == undefined ||
                 price == undefined ||
                 code == undefined ||
-                stock == undefined ||
-                category == undefined ||
-                status == undefined
+                stock == undefined            
                 ) {
                 throw new Error ("Todos los campos son obligatorios");
             }
@@ -51,7 +49,7 @@ export default class ProductManager { //exporto para usarla dentro de app
            products.push(newProduct); //agrega nuevo producto como objeto
     
             await this.#saveProducts(products);//guarda la lista en json
-
+            return newProduct;
         } 
         catch (error){
             console.log(error.title, error.message)
