@@ -26,7 +26,7 @@
             <label>Stock:</label>
             <input type="number" id="stock">
         </div>
-        <button id="addProductBtn">Añadir al carrito</button>
+        <button id="addProductBtn">Añadir producto</button>
     </form>
 </div>
 
@@ -42,9 +42,6 @@
 <div class="listGroup">
     {{#each products}}
     <div class="cardProduct">
-        {{!-- <div class="imgCardProduct">
-            <img src="{{this.thumbnail}}" alt="{{this.title}}">
-        </div> --}}
         <div class="imgCardProduct">
             <img src="{{this.thumbnail}}" alt="{{this.name}}" />
         </div>

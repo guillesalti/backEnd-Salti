@@ -1,48 +1,9 @@
-// const socket =io ();
-// const addProductBtn = document.querySelector("#addProductBtn");
-// const deleteProductBtn = document.querySelector("#deleteProductBtn");
-
-// addProductBtn.addEventListener("click", ()=> { //escucha los clicks
-    
-//     const title = document.querySelector('#title').value;
-//     const description = document.querySelector('#description').value;
-//     const price= document.querySelector('#price').value;
-//     const thumbnail= document.querySelector('#thumbnail').value;
-//     const code= document.querySelector('#code').value;
-//     const stock= document.querySelector('#stock').value;
-    
-//     const product = {
-//         title, description, price, thumbnail, code, stock,
-//     };
-
-//     socket.emit("addProduct", product);
-
-//     title.value=''; // reinicia los valores
-//     description.value='';
-//     price.value='';
-//     thumbnail.value='';
-//     code.value='';
-//     stock.value='';
-// });
-
-// deleteProductBtn.addEventListener('click', () => {
-//     const id = document.querySelector('#productId').value;
-//     socket.emit('deleteProduct', id);
-
-//     id.value='';
-//     alert(`el producto ${title}, fue elminiado`)
-// });
-
-// socket.io('updateProducts', (products) => {
-//     const updateProduct = 
-// })
-
-
 const socket = io();
 const addProductBtn = document.querySelector("#addProductBtn");
 const deleteProductBtn = document.querySelector("#deleteProductBtn");
 
-addProductBtn.addEventListener("click", () => {
+addProductBtn.addEventListener("click", (e) => {
+    e.preventDefault() 
     const title = document.querySelector('#title').value;
     const description = document.querySelector('#description').value;
     const price = document.querySelector('#price').value;
@@ -62,43 +23,74 @@ addProductBtn.addEventListener("click", () => {
     })
     .then(response => response.json())
 
-    .then((newProduct) => {
-        // Emitir el evento 'addProduct' al socket con el nuevo producto
-        socket.emit("addProduct", newProduct);
-    })
+    // .then((newProduct) => {
+    //     // Emitir el evento 'addProduct' al socket con el nuevo producto
+    //     socket.emit("addProduct", newProduct);
+    // })
     .catch(error => console.error('Error al agregar producto:', error));
 
     // Limpiar los campos
     clearForm();
 });
 
-deleteProductBtn.addEventListener('click', async () => {
+deleteProductBtn.addEventListener('click', async (e) => {
+    e.preventDefault() 
     const id = document.querySelector('#productId').value;
 
-    // Enviar la solicitud DELETE al servidor
-    await fetch(`/api/products/${id}`, {
-        method: 'DELETE',
-    })
-    .then(response => response.json())
+    try {
+       
+        const response = await fetch(`/api/products/${id}`, {
+            method: 'DELETE',
+        });
 
-    .then(() => {
+        // if (!response.ok) {
+        //     throw new Error(`Error al eliminar producto: ${response.statusText}`);
+        // }
 
-        socket.emit('deleteProduct', id);
+        // Si la solicitud DELETE fue exitosa, emitir el evento y mostrar el alert
+        // socket.emit('deleteProduct', id);
         alert(`El producto con ID ${id} fue eliminado`);
-    })
-    .catch(error => console.error('Error al eliminar producto:', error), alert('Error al eliminar producto'));
-    
+
+    } catch (error) {
+        console.error('Error al eliminar producto:', error);
+        alert('Error al eliminar producto');
+    }
 
     // Limpiar el campo del ID
     clearForm();
 });
 
-socket.on('updateProducts', async (products) => {// Actualizar la lista de productos 
-    updateProductsList(products);
-    await fetch(`/api/products`, {
-        method: 'GET',
-    })
-});
+
+
+const updateList = (list) =>{
+    listGroup.innerHTML =''
+    list.forEach(prod => {
+        const product = document.createElement ('div');
+        product.setAttribute('style', 'width: 18rem;');
+        product.setAttribute('class', 'newCard');
+        product.innerHTML= `
+        <div class="cardProduct">
+            <div class="imgCardProduct">
+                <img src="{{this.thumbnail}}" alt="{{this.name}}" />
+            </div>
+            <div class="infoCardProduct">
+                <h3 class="titleCardProduct">{{product.title}}</h3>
+                <p class="descriptionCardProduct">{{product.description}}</p>
+                <p class="priceCardProduct">{{product.price}}</p>
+                <p class="stockCardProduct">{product{product.stock}}</p>
+                <p class="codeCardProduct">{{product.code}}</p>
+                <p>{{product.id}}</p>
+            </div>
+            < a href='#' class='btn'>Añadir al carrito</a>
+        </div>
+    `;
+    listGroup.appendChild(product);
+    });
+    
+}
+socket.on('updateProducts', (data)=>{
+    console.log(data)
+})
 
  // Limpiar los campos del formulario
 function clearForm() {
@@ -111,4 +103,9 @@ function clearForm() {
     document.querySelector('#productId').value = '';
 }
    
+document.addEventListener('DOMContentLoaded', () => {
+
+    console.log('se recargó la página');
+    
+    });
     
