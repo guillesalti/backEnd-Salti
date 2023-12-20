@@ -23,7 +23,7 @@ export default class ProductManager { //exporto para usarla dentro de app
                 throw new Error("Producto inexistente")
             }
 
-            const products = await this.getProduct();
+            const products = await this.getProducts();
     
             if (products.find(product => product.title === title)){ //valida si se repite
                 console.error("Ya existe un producto con ese nombre:", title )
@@ -51,12 +51,13 @@ export default class ProductManager { //exporto para usarla dentro de app
             await this.#saveProducts(products);//guarda la lista en json
             return newProduct;
         } 
-        catch (error){
-            console.log(error.title, error.message)
+        catch (error) {
+            console.log(error);
+            throw error;
         }; //meter todo en try/catch para manejar los errores porque traigo los datos d afuera
     };   
     
-    async getProduct(){ //trae info de prod
+    async getProducts(){ //trae info de prod
         try {
             if (fs.existsSync(this.#filePath)) {
                 const products = await fs.promises.readFile(this.#filePath, "utf-8")
@@ -64,43 +65,44 @@ export default class ProductManager { //exporto para usarla dentro de app
             }
             return [];
         }
-        catch (error){
-            console.log(error.title, error.message)
-        };
+        catch (error) {
+            console.log(error);
+            throw error;
+        }
     };
     
     async getProductById(id){
         try {
-            const products = await this.getProduct();
+            const products = await this.getProducts();
             const product = products.find((product) => product.id == id)//si el id coincide con el id
 
         if (!product) {
             throw new Error ("Not Found");
          }
         return product;
+        }catch (error) {
+            console.log(error);
+            throw error;
         }
-        catch (error){
-            console.error(error)
-        };
         
     };
     
     async deleteProductById(id){
         try {
-            let products = await this.getProduct();
+            let products = await this.getProducts();
             //nuevo array con los prod q los id son distintos al q quiero eliminar
             products = products.filter((product)=> product.id !== id);
             this.#saveProducts (products);
         }
-        catch
-        (error){
-            console.log(error.title, error.message)
-        };
+        catch (error) {
+            console.log(error);
+            throw error;
+        }
     };
     
     async updateProduct(id, newValue){//actualizaciones
         try {
-            const products = await this.getProduct();
+            const products = await this.getProducts();
             //encuenra el lugar de un producto q coincida el id
             const productPlace = products.findIndex(product=>product.id ===id);
             
@@ -114,10 +116,10 @@ export default class ProductManager { //exporto para usarla dentro de app
             }
             await this.#saveProducts(products);
         }
-        catch
-        (error){
-            console.log(error.title, error.message)
-        };
+        catch (error) {
+            console.log(error);
+            throw error;
+        }
     };
 
 
@@ -125,11 +127,13 @@ export default class ProductManager { //exporto para usarla dentro de app
         try {
             await fs.promises.writeFile(this.#filePath, JSON.stringify(products))
         }
-        catch (error){
-            console.log(error.title, error.message)
+        catch (error) {
+            console.log(error);
+            throw error;
         };
     };
 }
+
 // const productManager = new ProductManager();
 // await productManager.addProduct(
 //     "Caja Pan Dulce 250grs", 
@@ -221,4 +225,4 @@ export default class ProductManager { //exporto para usarla dentro de app
 //     "cajas",
 //     true
 // )
-// console.log (await productManager.getProduct()) 
+// console.log (await productManager.getProducts()) 

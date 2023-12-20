@@ -6,7 +6,7 @@ const cartManager = new CartManager();
 
 router.get("/", async (req, res) => {
     try{
-        let cart = await cartManager.getCart();
+        let cart = await cartManager.getCarts();
         res.status(200).send({ 
             success: true,
             carrito: cart,

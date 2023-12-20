@@ -11,7 +11,7 @@ export default class CartManager { //exporto para usarla dentro de app
 
     async addCart(){
         try {
-        const carts = await this.getCart();
+        const carts = await this.getCarts();
         const id = crypto.randomUUID()
 
         const newCart = {
@@ -26,12 +26,16 @@ export default class CartManager { //exporto para usarla dentro de app
         return newCart
 
         } catch (error){
-            console.log(error.title, error.message)
+            res.status(400).send({
+            success: false,
+            message: error.message,            
+        })
+        throw error;
         };
  
     }
 
-    async getCart(){ //trae info
+    async getCarts(){ //trae info
         try {
             if (fs.existsSync(this.#filePath)) {
                 const carts = await fs.promises.readFile(this.#filePath, "utf-8")
@@ -40,22 +44,38 @@ export default class CartManager { //exporto para usarla dentro de app
             return [];
         }
         catch (error){
-            console.log(error.title, error.message)
+            res.status(400).send({
+            success: false,
+            message: error.message,            
+        })
+        throw error;
         };
-    };
+    };product
 
     async getCartById(id){
         try {
-            const carts = await this.getCart();
+            const carts = await this.getCarts();
             const cart = carts.find((cart) => cart.id == id)//si el id coincide con el id
 
         if (!cart) {
             throw new Error ("Not Found");
          }
+         cart.products = await Promise.all(
+            cart.products.map(async (productData) => {
+                return {
+                    product: await productManager.getProductById(productData.product),
+                    quantity: productData.quantity,
+                };
+            })
+         )
+
         return cart;
-        }
-        catch (error){
-            console.error(error)
+        }catch (error){
+            res.status(400).send({
+            success: false,
+            message: error.message,            
+        })
+        throw error;
         };
         
     };
@@ -81,7 +101,7 @@ export default class CartManager { //exporto para usarla dentro de app
             }
          //si existe le suma 1
 
-         const carts = await this.getCart();
+         const carts = await this.getCarts();
 
             const cartsUpdated = carts.map((existingCart) => {
                 if (existingCart.id == cid) { // si existe me lo retorna modificado
@@ -94,10 +114,12 @@ export default class CartManager { //exporto para usarla dentro de app
          await this.#saveCarts(cartsUpdated) //guarda carritos modificados
 
         return cart;
-        }catch
-        (error){
-            console.log(error)
-            throw error;
+        }catch (error){
+            res.status(400).send({
+            success: false,
+            message: error.message,            
+        })
+        throw error;
         };
     }
 
@@ -108,7 +130,7 @@ export default class CartManager { //exporto para usarla dentro de app
     async deleteCartById(id){
         try {
 
-            let carts = await this.getCart();
+            let carts = await this.getCarts();
            
             carts = carts.filter((cart)=> cart.id !== id);
             this.#saveCarts (carts);

@@ -1,0 +1,17 @@
+<div class="listGroup">
+    {{#each products}}
+    <div class="cardProduct">
+        <div class="imgCardProduct">
+            <img src="{{this.thumbnail}}" alt="{{this.title}}">
+        </div>
+        <div class="infoCardProduct">
+            <h3 class="titleCardProduct">{{this.title}}</h3>
+            <p class="descriptionCardProduct">{{this.description}}</p>
+            <p class="priceCardProduct">{{this.price}}</p>
+            <p class="stockCardProduct">{{this.stock}}</p>
+            <p class="codeCardProduct">{{this.code}}</p>
+             <p>{{this.id}}</p>
+        </div>
+    </div>
+    {{/each}}
+</div>

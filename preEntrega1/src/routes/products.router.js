@@ -7,7 +7,7 @@ const productManager = new ProductManager();
 router.get ('/', async (req, res)=> {
     try {
         const { limit } = req.query; //query es el obj con la variable del limite 
-        const products = await productManager.getProduct(); //await porque get prod es asincronica
+        const products = await productManager.getProducts(); //await porque get prod es asincronica
 
         if (!limit) { // que nos arroja si no esta definido, muestra todos
             res.status(200).send({ //200 es rta exitosa
@@ -130,7 +130,7 @@ router.delete('/:pid', async (req, res) => { //borrar info
         console.error(error);
         res.status(500).send({
         success: false,
-        message: `Error al eliminar el producto: ${title}`,
+        message: 'Error al eliminar el producto',
         });
     }
 });
