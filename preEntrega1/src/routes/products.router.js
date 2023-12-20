@@ -56,6 +56,9 @@ router.post('/', async (req, res) => { //crea info
 
         const result = await productManager.addProduct(title, description, price, thumbnail, code, stock);
 
+        const updatedProducts = await productManager.getProducts();
+        req.io.emit("updateProducts", updatedProducts);
+
         if (result) {
             res.status(200).send({
                 success: true,
